@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metric-Imperial Converter</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    h1 {
+      color: #667eea;
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 2.5rem;
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 40px;
+      font-size: 1rem;
+    }
+    
+    .converter-form {
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #333;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    
+    input {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    
+    button {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102,126,234,0.4);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    #result {
+      background: #e8f5e9;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-size: 1.1rem;
+      text-align: center;
+      display: none;
+      border-left: 4px solid #4caf50;
+    }
+    
+    #result.show {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+    
+    #result.error {
+      background: #ffebee;
+      border-left-color: #f44336;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .examples {
+      background: #e3f2fd;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 30px;
+      border-left: 4px solid #2196f3;
+    }
+    
+    .examples h3 {
+      color: #1976d2;
+      margin-bottom: 15px;
+    }
+    
+    .examples ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .examples li {
+      padding: 8px 0;
+      color: #555;
+    }
+    
+    .examples code {
+      background: white;
+      padding: 3px 8px;
+      border-radius: 5px;
+      color: #d32f2f;
+      font-weight: bold;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔄 Metric-Imperial Converter</h1>
+    <p class="subtitle">Convert between metric and imperial units easily!</p>
+    
+    <div class="converter-form">
+      <label for="convertInput">Enter value and unit:</label>
+      <input 
+        type="text" 
+        id="convertInput" 
+        placeholder="e.g., 10L, 5.5mi, 1/2kg"
+      >
+      <button onclick="convert()">Convert</button>
+    </div>
+    
+    <div id="result"></div>
+    
+    <div class="examples">
+      <h3>💡 Examples:</h3>
+      <ul>
+        <li>• <code>10L</code> - 10 liters to gallons</li>
+        <li>• <code>5mi</code> - 5 miles to kilometers</li>
+        <li>• <code>1/2kg</code> - Half kilogram to pounds</li>
+        <li>• <code>3.5gal</code> - 3.5 gallons to liters</li>
+        <li>• <code>kg</code> - 1 kilogram to pounds (no number = 1)</li>
+      </ul>
+    </div>
+    
+    <div class="examples" style="margin-top: 20px;">
+      <h3>📏 Valid Units:</h3>
+      <ul>
+        <li>• <strong>gal</strong> (gallons) ↔ <strong>L</strong> (liters)</li>
+        <li>• <strong>mi</strong> (miles) ↔ <strong>km</strong> (kilometers)</li>
+        <li>• <strong>lbs</strong> (pounds) ↔ <strong>kg</strong> (kilograms)</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    async function convert() {
+      const input = document.getElementById('convertInput').value;
+      const resultDiv = document.getElementById('result');
+      
+      if (!input) {
+        resultDiv.textContent = 'Please enter a value to convert';
+        resultDiv.className = 'error show';
+        return;
+      }
+      
+      try {
+        const response = await fetch(`/api/convert?input=${encodeURIComponent(input)}`);
+        const data = await response.json();
+        
+        if (data.error) {
+          resultDiv.textContent = '❌ Error: ' + data.error;
+          resultDiv.className = 'error show';
+        } else {
+          resultDiv.textContent = '✅ ' + data.string;
+          resultDiv.className = 'show';
+        }
+      } catch (error) {
+        resultDiv.textContent = '❌ Error connecting to server';
+        resultDiv.className = 'error show';
+      }
+    }
+    
+    // Permitir Enter para convertir
+    document.getElementById('convertInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        convert();
+      }
+    });
+  </script>
+</body>
+</html>

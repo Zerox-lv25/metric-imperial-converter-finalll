@@ -1,0 +1,6 @@
+{
+  "require": "test-runner.js",
+  "ui": "tdd",
+  "timeout": 5000,
+  "exit": true
+}

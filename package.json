@@ -1,0 +1,30 @@
+{
+  "name": "fcc-metric-imperial-converter",
+  "version": "1.0.0",
+  "description": "Metric-Imperial Converter for freeCodeCamp Quality Assurance",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "mocha --ui tdd tests/ --exit"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.1",
+    "mocha": "^9.1.3"
+  },
+  "engines": {
+    "node": "14.x"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "freecodecamp",
+    "quality-assurance"
+  ],
+  "author": "freeCodeCamp",
+  "license": "MIT"
+}
