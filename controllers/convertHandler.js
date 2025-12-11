@@ -1,6 +1,8 @@
 // controllers/convertHandler.js
 function ConvertHandler() {
-  const validUnits = ['gal', 'L', 'mi', 'km', 'lbs', 'kg'];
+  // Unidades válidas
+  const validUnits = ['gal', 'l', 'mi', 'km', 'lbs', 'kg'];
+
   const unitMap = {
     gal: 'L',
     L: 'gal',
@@ -22,12 +24,12 @@ function ConvertHandler() {
   // Extrae y valida el número
   this.getNum = function(input) {
     if (!input) return 1;
-    const match = input.match(/^[\d.\/]+/); // toma la parte numérica inicial
-    if (!match) return 1; // no hay número explícito => default 1
+    const match = input.match(/^[\d.\/]+/); // parte numérica inicial
+    if (!match) return 1; // default 1 si no hay número
 
     const numStr = match[0];
 
-    // Rechaza doble fracción (más de un '/')
+    // Rechaza doble fracción
     const slashCount = (numStr.match(/\//g) || []).length;
     if (slashCount > 1) return 'invalid number';
 
@@ -52,15 +54,12 @@ function ConvertHandler() {
     const match = input.match(/[a-zA-Z]+$/);
     if (!match) return 'invalid unit';
 
-    let unit = match[0];
+    let unit = match[0].toLowerCase();
 
-    // Normaliza: todo a minúscula excepto liter que debe ser 'L'
-    unit = unit.toLowerCase();
-    if (unit === 'l') unit = 'L';
+    if (!validUnits.includes(unit)) return 'invalid unit';
 
-    // Acepta mayúsculas/minúsculas pero valida contra el set correcto
-    const isValid = validUnits.includes(unit);
-    return isValid ? unit : 'invalid unit';
+    // Devuelve 'L' en mayúscula si corresponde
+    return unit === 'l' ? 'L' : unit;
   };
 
   this.getReturnUnit = function(initUnit) {
